@@ -1,0 +1,48 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{parent()}}Inscription{% endblock %}
+
+{% block contenu %}
+
+<br>
+    <div class="row justify-content-center">
+      <form method="POST" action="index.php?page=inscription" class="col-xl-4 col-sm-8">
+
+        <div class="form-group">
+          <label for="formGroupExampleInput">Pseudonyme</label>
+          <input type="text" name="inputPseudo" class="form-control" id="inputPseudo" placeholder="Pseudo">
+        </div>
+
+        <div class="form-group">
+          <label for="formGroupExampleInput">Rôle</label>
+          <input type="text" name="role" class="form-control" id="role" placeholder="Votre rôle">
+        </div>
+
+        <div class="form-group">
+          <label for="formGroupExampleInput">Date de Naissance</label>
+          <input type="date" name="datenaissance" class="form-control" id="formGroupExampleInput" placeholder="Votre date de naissance">
+        </div>
+
+        <div class="form-group">
+          <label for="exampleInputEmail">Adresse Email</label>
+          <input type="email" name="inputEmail" class="form-control" id="inputEmail" aria-describedby="emailHelp">
+          <small id="emailHelp" class="form-text text-muted">Elle ne sera pas partagée</small>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleInputPassword1">Mot de passe</label>
+          <input type="password" name="inputPassword" class="form-control" id="inputPassword">
+        </div>
+
+        <div class="form-group">
+          <label for="exampleInputPassword1">Confirmation de mot de passe</label>
+          <input type="password" name="inputPassword2" class="form-control" id="inputPassword2">
+        </div>
+
+        
+        <label for="photo" class="form-control">Photo :</label>
+        <input type="file" name="photo" id="photo" class="form-control"/>
+
+        <button type="submit" name="btInscrire" id="btInscrire" class="btn btn-primary">S'Inscrire</button>
+      </form>
+    </div>{% endblock %}
