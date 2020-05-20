@@ -4,12 +4,16 @@
         private $insert;
         private $getArticle;
         private $selectById;
+		private $selectLimit;
+		private $selectCount;
 
         public function __construct($db){
             $this->db=$db;
             $this->insert = $this->db->prepare("INSERT INTO article(idProfil, titre, contenu, dateCreation)values(:idProfil,:titre,:contenu,NOW())");
             $this->getArticle = $this->db->prepare("SELECT P.id, P.pseudo, R.libelle, P.photo, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE A.idProfil=P.id AND P.idRole=R.id");
 			$this->selectById = $this->db->prepare("SELECT P.id, P.pseudo, R.libelle, P.photo, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE A.idProfil=P.id AND P.idRole=R.id AND id=:id");
+			$this->selectLimit = $db->prepare("SELECT P.id, P.pseudo, R.libelle, P.photo, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE A.idProfil=P.id AND P.idRole=R.id ORDER BY id LIMIT :inf,:limite");
+			$this->selectCount =$db->prepare("SELECT COUNT(*) AS nb FROM article");
         }
 
         public function insert ($idProfil,$titre,$contenu){
@@ -37,6 +41,24 @@
 				print_r($this->selectById->errorInfo());
 			}
 			return $this->selectById->fetch();
+		}
+
+		public function selectLimit($inf, $limite){
+			$this->selectLimit->bindParam(':inf', $inf, PDO::PARAM_INT);
+			$this->selectLimit->bindParam(':limite', $limite, PDO::PARAM_INT);
+			$this->selectLimit->execute();
+			if ($this->selectLimit->errorCode()!=0){
+				print_r($this->selectLimit->errorInfo());
+			}
+			return $this->selectLimit->fetchAll();
+		}
+
+		public function selectCount(){
+			$this->selectCount->execute();
+			if ($this->selectCount->errorCode()!=0){
+				print_r($this->selectCount->errorInfo());
+			}
+			return $this->selectCount->fetch();
 		}
     }
 ?>    
