@@ -3,6 +3,12 @@ function getPage($db){
     $lesPages['accueil']="accueilControleur";
     $lesPages['connexion']="connexionControleur";
     $lesPages['inscription']="inscriptionControleur";
+    $lesPages['deconnexion']="deconnexionControleur";
+    $lesPages['profil']="profilControleur";
+    $lesPages['modifprofil']="modifProfilControleur";
+    $lesPages['article']="articleControleur";
+    $lesPages['ajoutarticle']="ajoutArticleControleur";
+    $lesPages['listearticles']="listeArticlesControleur";
     
     if($db!=NULL){
         if(isset($_GET['page'])) {

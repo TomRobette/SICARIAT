@@ -6,7 +6,7 @@
 
 <br>
     <div class="row justify-content-center">
-      <form method="POST" action="index.php?page=inscription" class="col-xl-4 col-sm-8">
+      <form method="POST" action="index.php?page=inscription" class="col-xl-4 col-sm-8" enctype="multipart/form-data">
 
         <div class="form-group">
           <label for="formGroupExampleInput">Pseudonyme</label>
@@ -39,9 +39,10 @@
           <input type="password" name="inputPassword2" class="form-control" id="inputPassword2">
         </div>
 
-        
-        <label for="photo" class="form-control">Photo :</label>
-        <input type="file" name="photo" id="photo" class="form-control"/>
+        <div class="form-group">
+          <label for="photo">Photo :</label>
+          <input type="file" name="photo" id="photo" class="form-control"/>        
+        </div>
 
         <button type="submit" name="btInscrire" id="btInscrire" class="btn btn-primary">S'Inscrire</button>
       </form>

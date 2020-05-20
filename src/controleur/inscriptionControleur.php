@@ -11,7 +11,7 @@
         $role = $_POST['role'];      
         $form['valide'] = true;      
 
-        $upload = new Upload(array('png', 'gif', 'jpg', 'jpeg'), 'images', 500000);
+        $upload = new Upload(array('png', 'gif', 'jpg', 'jpeg'), 'images', 800000);
         $photo = $upload->enregistrer('photo');
 
         if ($inputPassword!=$inputPassword2){        
@@ -24,6 +24,12 @@
             $form['valide'] = false;
             $form['message'] = 'Problème d\'insertion dans la table utilisateur ';
           }
+          // else{
+          //   $_SESSION['login'] = $inputPseudo['pseudo'];                
+          //   $_SESSION['role'] = $role;
+          //   $_SESSION['image'] = $photo['nom'];    
+          //   header("Location:index.php");    
+          // }
         }
       }
         $form['email'] = $inputEmail;

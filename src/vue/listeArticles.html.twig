@@ -1,0 +1,41 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{parent()}}Articles{% endblock %}
+
+{% block contenu %}
+<div class="list-group">
+    {% for article in liste %}
+        {% if article.titre is empty %}
+		    Sans titre
+	    {% else %}
+            <a href="#" class="list-group-item list-group-item-action">{{article.titre}}  {{article.pseudo}}   {{article.dateCreation}}   {{article.nbVues}}</a>
+        {% endif %}
+    {% endfor %}
+</div>
+
+
+<table>
+{% for article in liste %}
+<ul class="list-group">
+  <li class="list-group-item">
+    {% if article.titre is empty %}
+		Sans titre
+	{% else %}
+	<div class="card mb-3" style="max-width: 540px;">
+      <div class="row no-gutters">
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">{{article.titre}}</h5>
+            <p class="card-text">{{article.pseudo}}</p>
+            <p class="card-text">{{article.dateCreation}}</p>
+            <p class="card-text">{{article.nbVues}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %} 
+    </li>
+</ul>
+{% endfor %}
+</table>
+{% endblock %}
