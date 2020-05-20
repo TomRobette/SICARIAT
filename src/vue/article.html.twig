@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{parent()}}Article {{form['article'].titre}}{% endblock %}
+
+{% block contenu %}
+
+<br>
+    <h2>{{form['article'].titre}}</h2>
+    <div class="row justify-content-center">
+        {{form['article'].contenu}}
+    </div>
+{% endblock %}
