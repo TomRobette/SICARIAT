@@ -17,7 +17,7 @@
             $this->insert = $this->db->prepare("INSERT INTO profil(pseudo, email, mdp, idRole, photo)values(:pseudo,:email,:mdp,:idRole,:photo)");
 			$this->connect = $this->db->prepare("SELECT pseudo, email, idRole, mdp, photo FROM profil WHERE email=:email");
 			$this->connectPseudo = $this->db->prepare("SELECT pseudo, email, idRole, mdp, photo FROM profil WHERE pseudo=:pseudo");
-			$this->selectById = $this->db->prepare("SELECT id, pseudo, email, idRole, photo FROM profil WHERE id=:id");
+			$this->selectById = $this->db->prepare("SELECT P.id, P.pseudo, P.email, P.idRole, P.photo, R.libelle FROM profil P, role R WHERE P.idRole=R.id AND P.id=:id");
 			$this->selectByPseudo = $this->db->prepare("SELECT id, pseudo, email, idRole, photo FROM profil WHERE pseudo=:pseudo");
 			$this->show = $this->db->prepare("SELECT id, pseudo, email, idRole, photo FROM profil");
 			$this->update = $this->db->prepare("UPDATE profil SET pseudo=:pseudo, idRole=:idRole, photo=:photo WHERE id=:id");

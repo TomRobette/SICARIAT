@@ -7,10 +7,10 @@
             if ($unArticle!=null){
                 $form['article'] = $unArticle;
                 $profil = new Profil($db);
-                $unProfil = $profil->selectById($unArticle['id']);
+                $unProfil = $profil->selectById($unArticle['idProfil']);
                 $form['profil'] = $unProfil;
             }else{
-                $form['message'] = 'Utilisateur incorrect';
+                $form['message'] = 'Article incorrect';
             }
         }else{
             $form['message'] = 'Article non précisé';
