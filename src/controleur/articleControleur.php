@@ -35,6 +35,20 @@
         $form['nbpages'] = ceil($nb/$limite);
         $form['nopage'] = $nopage;
 
+        if (isset($_POST['btPoster']) && $unArticle!=null){
+            $inputContenu = $_POST['inputContenu'];
+            
+            $form['valide'] = true;      
+            $profil = new Profil($db);
+            $idProfil = $profil->selectByPseudo($_SESSION['login']);
+            $article=new Article($db);
+            $exec=$article->addReply($idProfil['id'], $inputContenu, $unArticle['idArticle']);
+            if(!$exec){
+                $form['valide'] = false;
+                $form['message'] = 'Problème d\'insertion dans la table reponse ';
+            }
+        }
+
         echo $twig->render('article.html.twig', array('form'=>$form,'liste'=>$liste));
     }
        

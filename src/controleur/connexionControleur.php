@@ -20,7 +20,7 @@
                     $form['valide'] = false;       
                     $form['message'] = 'Login ou mot de passe incorrect';          
                 }else{ 
-                    $_SESSION['login'] = $unProfil['pseudo'];                
+                    $_SESSION['login'] = $unProfil['pseudo'];            
                     $_SESSION['role'] = $unProfil['idRole'];
                     $_SESSION['image'] = $unProfil['photo'];    
                     header("Location:index.php");          
