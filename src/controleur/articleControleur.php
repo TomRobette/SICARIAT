@@ -15,7 +15,27 @@
         }else{
             $form['message'] = 'Article non précisé';
         }
-        echo $twig->render('article.html.twig', array('form'=>$form));
+
+
+        $liste = array();
+        $liste = $article->getReplies($unArticle['idArticle']);
+        $limite=10;
+        if(!isset($_GET['nopage'])){
+            $inf=0;
+            $nopage=0;
+        }else{
+            $nopage=$_GET['nopage'];
+            $inf=$nopage * $limite;
+        }
+        $r = $article->selectCountReplies();
+        $nb = $r['nb'];
+
+
+        $liste = $article->selectLimitReplies($inf,$limite);
+        $form['nbpages'] = ceil($nb/$limite);
+        $form['nopage'] = $nopage;
+
+        echo $twig->render('article.html.twig', array('form'=>$form,'liste'=>$liste));
     }
        
 ?>

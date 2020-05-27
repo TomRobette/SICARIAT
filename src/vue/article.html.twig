@@ -5,7 +5,7 @@
 {% block contenu %}
 
 <br>
-<div class="card bg-light mb-3" style="max-width: 600px;">
+<div class="card bg-light mb-3" style="max-width: 1200px;">
     <div class="card-header">
         <div class="card mb-3" style="max-width: 540px;">
         <div class="row no-gutters">
@@ -30,6 +30,66 @@
 </div>
     
     <br>
+    {% if session.login is defined%}
+    <div class="card bg-light mb-3" style="max-width: 1200px;">
+        <div class="row justify-content-center">
+            <form method="POST" action="index.php?page=article&id={{form['article'].idArticle}}&nopage=0" class="col-xl-4 col-sm-8" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label for="inputContenu">Votre réponse :</label>
+                    <input type="text" name="inputContenu" class="form-control" id="inputContenu" placeholder="">
+                </div>
+
+                <button type="submit" name="btPoster" id="btPoster" class="btn btn-primary">Poster</button>
+            </form>
+        </div>
+    </div>
     
+    {% endif %}
+
+    <br>
+
+    {% for reply in liste %}
+<div class="card bg-light mb-3" style="max-width: 1200px;">
+    <div class="card-header">
+        <div class="card mb-3" style="max-width: 540px;">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img src="images/{{reply.photo}}" class="card-img" alt="...">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{reply.pseudo}}</h5>
+                        <p class="card-text"><small class="text-muted">{{reply.libelle}}</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="card-body">
+        <div class="row justify-content-center">
+            {{reply.contenu}}
+        </div>
+    </div>
+</div>
+    {% endfor %}
     
+{% set nb = form.nbpages %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center m-4 p-4">
+            <li class="page-item {% if form.nopage == 0 %}disabled{% endif %}">
+                <a class="page-link" href="index.php?page=article&id={{form['article'].idArticle}}&nopage={{ 0 }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% for i in 1..nb %}
+                <li class="page-item {% if i ==form.nopage +1 %} active{% endif %}"><a class="page-link" href="index.php?page=article&id={{form['article'].idArticle}}&nopage={{ i-1 }}">{{ i }}<span class="sronly"></span></a></li>
+            {% endfor %}
+            <li class="page-item {% if form.nopage == form.nbpages-1 %}disabled{% endif %}">
+                <a class="page-link" href="index.php?page=article&id={{form['article'].idArticle}}&nopage={{ nb-1 }}" aria-label="Next" >
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 {% endblock %}
