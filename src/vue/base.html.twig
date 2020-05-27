@@ -28,7 +28,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
       
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse my-lg-0" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
               <a class="nav-link text-white" href="index.php?page=accueil">Accueil<span class="sr-only">(current)</span></a>
@@ -42,7 +42,8 @@
             </li>         
 				    {% endif %}
           </ul>
-          <form class="form-inline my-2 my-lg-0">
+        </div>
+        <form class="form-inline my-2 my-lg-0">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                   {%if session.login is defined %}                
@@ -55,16 +56,16 @@
 					          <li></li>
 				          {%if session.login is defined %}
                     <li>
-                      <div class="card xs-3" style="max-width: 220px;">
+                      <div class="card xs-4" style="max-width: 300px;">
                         <div class="row no-gutters">
                         {% if session.image is defined %}
-                          <div class="col-md-4">
+                          <div class="col-4 float-md-left">
                             <img src="images/{{session.image}}" class="card-img" alt="...">
                           </div>
                         {% endif %}  
                           <div class="col-xs-8">
                             <div class="card-body">
-                              <h6 class="card-title">{{session.login}}</h5>
+                              <h6 class="card-title">{{session.login}}</h6>
                             </div>
                           </div>
                         </div>
@@ -74,7 +75,6 @@
                 </ul>
               </div>
           </form>
-        </div>
       </nav>
     	{% block contenu %}{% endblock %}
 
