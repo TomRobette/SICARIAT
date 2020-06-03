@@ -16,6 +16,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{form['profil'].pseudo}}</h5>
                         <p class="card-text"><small class="text-muted">{{form['profil'].libelle}}</small></p>
+                        <a href="index.php?page=profil&profil={{form['profil'].pseudo}}" class="card-link">Voir profil</a>
                 </div>
             </div>
         </div>
@@ -49,7 +50,7 @@
 
     <br>
 
-    {% for reply in liste %}
+    {% for reply in listeReplies %}
 <div class="card bg-light mb-3" style="max-width: 1200px;">
     <div class="card-header">
         <div class="card mb-3" style="max-width: 540px;">
@@ -61,6 +62,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{reply.pseudo}}</h5>
                         <p class="card-text"><small class="text-muted">{{reply.libelle}}</small></p>
+                        <a href="index.php?page=profil&profil={{reply.pseudo}}" class="card-link">Voir profil</a>
                 </div>
             </div>
         </div>

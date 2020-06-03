@@ -1,0 +1,82 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{parent()}}Mon Profil{% endblock %}
+
+{% block contenu %}
+
+<br>
+    {% if session.login is defined %}
+        {% if session.login == form['profil'].pseudo %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="media">
+                        <img src="images/{{form['profil'].photo}}" class="mr-3" alt="...">
+                            <div class="media-body">
+                                <h5 class="mt-0">{{form['profil'].photo}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><b>Pseudonyme :</b> {{form['profil'].pseudo}}</li>
+                            <li class="list-group-item"><b>Adresse Mail :</b> {{form['profil'].email}}</li>
+                            <li class="list-group-item"><b>Rôle :</b> {{form['profil'].libelle}}</li>
+                            <li class="list-group-item"><b>Nombre d'articles écrits :</b> 
+                                {% if form['profil'].nbArticles==null %}
+                                    0
+                                {% else %}
+                                    {{form['profil'].nbArticles}}
+                                {% endif %}</li>
+                            <li class="list-group-item"><b>Nombre de réponses écrites :</b> 
+                                {% if form['profil'].nbReplies==null %}
+                                    0
+                                {% else %}
+                                    {{form['profil'].nbReplies}}
+                                {% endif %}</li>
+                            <li class="list-group-item"><b>Inscrit depuis le :</b> {{form['profil'].dateInscription}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="media">
+                            <img src="images/{{form['profil'].photo}}" class="mr-3" alt="...">
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><b>Pseudonyme :</b> {{form['profil'].pseudo}}</li>
+                            <li class="list-group-item"><b>Adresse Mail :</b> 
+                                {% if form['profil'].hideEmail==1 %}
+                                    <p class="text-muted">L'utilisateur n'a pas souhaité afficher son adresse mail</p>
+                                {% else %}
+                                    {{form['profil'].email}}
+                                {% endif %}    
+                            </li>
+                            <li class="list-group-item"><b>Rôle :</b> {{form['profil'].libelle}}</li>
+                            <li class="list-group-item"><b>Nombre d'articles écrits :</b> 
+                                {% if form['profil'].nbArticles==null %}
+                                    0
+                                {% else %}
+                                    {{form['profil'].nbArticles}}
+                                {% endif %}</li>
+                            <li class="list-group-item"><b>Nombre de réponses écrites :</b> 
+                                {% if form['profil'].nbReplies==null %}
+                                    0
+                                {% else %}
+                                    {{form['profil'].nbReplies}}
+                                {% endif %}</li>
+                            <li class="list-group-item"><b>Inscrit depuis le :</b> {{form['profil'].dateInscription}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+        <h1>Vous n'êtes pas connecté</h1>
+    {% endif %}
+{% endblock %}

@@ -23,17 +23,17 @@
           if(!$exec){
             $form['valide'] = false;
             $form['message'] = 'Problème d\'insertion dans la table utilisateur ';
+          }else{
+            $unProfil = $profil->connect($inputLogin);
+            $_SESSION['login'] = $inputPseudo['pseudo'];                
+            $_SESSION['role'] = $role;
+            $_SESSION['image'] = $photo['nom'];    
+            header("Location:index.php");    
           }
-          // else{
-          //   $_SESSION['login'] = $inputPseudo['pseudo'];                
-          //   $_SESSION['role'] = $role;
-          //   $_SESSION['image'] = $photo['nom'];    
-          //   header("Location:index.php");    
-          // }
         }
-      }
         $form['email'] = $inputEmail;
         $form['role'] = $role;
+      }
         echo $twig -> render('inscription.html.twig',array());
     }
 ?>

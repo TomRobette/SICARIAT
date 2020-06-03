@@ -17,8 +17,8 @@
         }
 
 
-        $liste = array();
-        $liste = $article->getReplies($unArticle['idArticle']);
+        $listeReplies = array();
+        $listeReplies = $article->getReplies($unArticle['idArticle']);
         $limite=10;
         if(!isset($_GET['nopage'])){
             $inf=0;
@@ -30,8 +30,8 @@
         $r = $article->selectCountReplies();
         $nb = $r['nb'];
 
-
-        $liste = $article->selectLimitReplies($inf,$limite);
+        $liste = array();
+        $liste = $article->selectLimitReplies($unArticle['idArticle'],$inf,$limite);
         $form['nbpages'] = ceil($nb/$limite);
         $form['nopage'] = $nopage;
 
@@ -47,9 +47,10 @@
                 $form['valide'] = false;
                 $form['message'] = 'Problème d\'insertion dans la table reponse ';
             }
+            $profil->addReply($idProfil['id']);
         }
 
-        echo $twig->render('article.html.twig', array('form'=>$form,'liste'=>$liste));
+        echo $twig->render('article.html.twig', array('form'=>$form,'listeReplies'=>$listeReplies,'liste'=>$liste));
     }
        
 ?>

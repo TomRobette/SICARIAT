@@ -11,19 +11,27 @@
 		private $delete;
 		private $selectLimit;
 		private $selectCount;
+		private $changeShowEmail;
+		private $hidden;
+		private $addArticle;
+		private $addReply;
 
 		public function __construct($db){
             $this->db=$db;
-            $this->insert = $this->db->prepare("INSERT INTO profil(pseudo, email, mdp, idRole, photo)values(:pseudo,:email,:mdp,:idRole,:photo)");
+            $this->insert = $this->db->prepare("INSERT INTO profil(pseudo, email, mdp, idRole, photo, dateInscription)values(:pseudo,:email,:mdp,:idRole,:photo, NOW())");
 			$this->connect = $this->db->prepare("SELECT pseudo, email, idRole, mdp, photo FROM profil WHERE email=:email");
 			$this->connectPseudo = $this->db->prepare("SELECT pseudo, email, idRole, mdp, photo FROM profil WHERE pseudo=:pseudo");
-			$this->selectById = $this->db->prepare("SELECT P.id, P.pseudo, P.email, P.idRole, P.photo, R.libelle FROM profil P, role R WHERE P.idRole=R.id AND P.id=:id");
-			$this->selectByPseudo = $this->db->prepare("SELECT id, pseudo, email, idRole, photo FROM profil WHERE pseudo=:pseudo");
+			$this->selectById = $this->db->prepare("SELECT P.id, P.pseudo, P.email, P.idRole, P.photo, R.libelle, P.dateInscription, P.nbArticles, P.nbReplies, P.hideEmail FROM profil P, role R WHERE P.idRole=R.id AND P.id=:id");
+			$this->selectByPseudo = $this->db->prepare("SELECT P.id, P.pseudo, P.email, P.idRole, R.libelle, P.photo, P.dateInscription, P.nbArticles, P.nbReplies, P.hideEmail FROM profil P, role R WHERE P.idRole=R.id AND pseudo=:pseudo");
 			$this->show = $this->db->prepare("SELECT id, pseudo, email, idRole, photo FROM profil");
 			$this->update = $this->db->prepare("UPDATE profil SET pseudo=:pseudo, idRole=:idRole, photo=:photo WHERE id=:id");
 			$this->delete = $this->db->prepare("DELETE FROM profil WHERE id=:id");
-			$this->selectLimit = $db->prepare("SELECT id, pseudo, email, mdp, idRole, photo FROM profil ORDER BY id LIMIT :inf,:limite");
-			$this->selectCount = $db->prepare("SELECT COUNT(*) AS nb FROM profil");
+			$this->selectLimit = $this->db->prepare("SELECT id, pseudo, email, mdp, idRole, photo FROM profil ORDER BY id LIMIT :inf,:limite");
+			$this->selectCount = $this->db->prepare("SELECT COUNT(*) AS nb FROM profil");
+			$this->changeShowEmail = $this->db->prepare("UPDATE profil SET hideEmail=:hideEmail WHERE id=:id");
+			$this->hidden = $this->db->prepare("SELECT hideEmail FROM profil WHERE id=:id");
+			$this->addArticle = $this->db->prepare("UPDATE profil SET nbArticles=:nbArticles WHERE id=:id");
+			$this->addReply = $this->db->prepare("UPDATE profil SET nbReplies=:nbReplies WHERE id=:id");
 		}
         
         public function insert ($pseudo,$email,$mdp,$idRole,$photo){
@@ -113,6 +121,61 @@
 				print_r($this->selectCount->errorInfo());
 			}
 			return $this->selectCount->fetch();
+		}
+
+		public function changeShowEmail($id){
+			$r = true;
+			$hide = $this->hidden($id);
+			if($hide['hideEmail']==1){
+				$this->changeShowEmail->execute(array(':id'=>$id, 'hideEmail'=>0));
+			}else{
+				$this->changeShowEmail->execute(array(':id'=>$id, 'hideEmail'=>1));
+			}
+			if ($this->changeShowEmail->errorCode()!=0){
+				print_r($this->changeShowEmail->errorInfo());
+				$r=false;
+			}
+			return $r;
+		}
+
+		public function hidden($id){
+			$this->hidden->execute(array(':id'=>$id));
+			if ($this->hidden->errorCode()!=0){
+				print_r($this->hidden->errorInfo());
+			}
+			return $this->hidden->fetch();
+		}
+
+		public function addArticle($id){
+			$r = true;
+			$profil = $this->selectById($id);
+			if($profil['nbArticles']!=null){
+				$nb = $profil['nbArticles']+1;
+				$this->addArticle->execute(array(':id'=>$id, 'nbArticles'=>$nb));
+			}else{
+				$this->addArticle->execute(array(':id'=>$id, 'nbArticles'=>1));
+			}
+			if ($this->addArticle->errorCode()!=0){
+				print_r($this->addArticle->errorInfo());
+				$r=false;
+			}
+			return $r;
+		}
+
+		public function addReply($id){
+			$r = true;
+			$profil = $this->selectById($id);
+			if($profil['nbReplies']!=null){
+				$nb = $profil['nbReplies']+1;
+				$this->addReply->execute(array(':id'=>$id, 'nbReplies'=>$nb));
+			}else{
+				$this->addReply->execute(array(':id'=>$id, 'nbReplies'=>1));
+			}
+			if ($this->addReply->errorCode()!=0){
+				print_r($this->addReply->errorInfo());
+				$r=false;
+			}
+			return $r;
 		}
 	}
 ?>

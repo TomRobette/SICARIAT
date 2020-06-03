@@ -13,6 +13,7 @@
                 $form['valide'] = false;
                 $form['message'] = 'Problème d\'insertion dans la table article ';
             }
+            $profil->addArticle($idProfil['id']);
         }
         echo $twig -> render('ajoutArticle.html.twig',array());
     }
