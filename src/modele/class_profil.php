@@ -54,11 +54,11 @@
 		}
 
 		public function connectPseudo($pseudo){
-			$unUtilisateur = $this->connect->execute(array(':pseudo'=>$pseudo));
-			if ($this->connect->errorCode()!=0){
-				print_r($this->connect->errorInfo());
+			$unUtilisateur = $this->connectPseudo->execute(array(':pseudo'=>$pseudo));
+			if ($this->connectPseudo->errorCode()!=0){
+				print_r($this->connectPseudo->errorInfo());
 			}
-			return $this->connect->fetch();
+			return $this->connectPseudo->fetch();
 		}
 
 		public function selectById($id){
