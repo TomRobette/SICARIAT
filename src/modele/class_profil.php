@@ -15,6 +15,7 @@
 		private $hidden;
 		private $addArticle;
 		private $addReply;
+		private $modify;
 
 		public function __construct($db){
             $this->db=$db;
@@ -32,6 +33,7 @@
 			$this->hidden = $this->db->prepare("SELECT hideEmail FROM profil WHERE id=:id");
 			$this->addArticle = $this->db->prepare("UPDATE profil SET nbArticles=:nbArticles WHERE id=:id");
 			$this->addReply = $this->db->prepare("UPDATE profil SET nbReplies=:nbReplies WHERE id=:id");
+			$this->modify = $this->db->prepare("UPDATE profil SET pseudo=:pseudo, email=:email, mdp=:mdp, photo=:photo WHERE id=:id");
 		}
         
         public function insert ($pseudo,$email,$mdp,$idRole,$photo){
@@ -173,6 +175,16 @@
 			}
 			if ($this->addReply->errorCode()!=0){
 				print_r($this->addReply->errorInfo());
+				$r=false;
+			}
+			return $r;
+		}
+
+		public function modify($id, $pseudo, $email, $mdp, $photo){
+			$r = true;
+			$this->modify->execute(array(':id'=>$id, ':pseudo'=>$pseudo, ':email'=>$email, ':mdp'=>$mdp, ':photo'=>$photo));
+			if ($this->modify->errorCode()!=0){
+				print_r($this->modify->errorInfo());
 				$r=false;
 			}
 			return $r;

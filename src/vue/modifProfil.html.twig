@@ -1,0 +1,42 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{parent()}}Modifier Profil{% endblock %}
+
+{% block contenu %}
+
+<br>
+    {% if session.login is defined %}
+        {% if session.login == form['profil'].pseudo %}
+            <div class="row justify-content-center">
+                    <form method="POST" action="index.php?page=modifprofil&profil={{session.login}}" class="col-xl-4 col-sm-8" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="inputPseudo">Modifier mon pseudo</label>
+                            <input type="name" class="form-control" name="inputPseudo" id="inputPseudo" value="{{form['profil'].pseudo}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail">Modifier mon adresse mail</label>
+                            <input type="email" class="form-control" name="inputEmail" id="inputEmail" value="{{form['profil'].email}}" aria-describedby="emailHelp">
+                            <small id="emailHelp" class="form-text text-muted">Un mail sera envoyé à votre nouvelle adresse pour la valider</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword">Mot de passe</label>
+                            <input type="password" class="form-control" name="inputPassword" id="inputPassword">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword2">Vérification du mot de passe</label>
+                            <input type="password" class="form-control" name="inputPassword2" id="inputPassword2">
+                        </div>
+                        <div class="form-group">
+                            <label for="photo">Photo :</label>
+                            <input type="file" name="photo" id="photo" class="form-control"/>        
+                        </div>
+                        <button type="submit" name="btModif" id="btModif" class="btn btn-primary">Valider les modifications</button>
+                    </form>
+            </div>
+        {% else %}
+            <h1>Vous ne pouvez pas modifier le compte d'un autre</h1>
+        {% endif %}
+    {% else %}
+        <h1>Vous n'êtes pas connecté</h1>
+    {% endif %}
+{% endblock %}

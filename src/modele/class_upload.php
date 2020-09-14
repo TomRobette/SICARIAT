@@ -39,6 +39,24 @@ class Upload{
                         $fichier['nom'] = preg_replace('/([^.a-z0-9]+)/i', '_', $fichier['nom']);
                     // copie du fichier
                         move_uploaded_file($_FILES[$data]['tmp_name'], $this->chemin.'/'.$fichier['nom']);
+                        // list($width, $height, $type, $attr) = getimagesize("images/"+$fichier['nom']);
+                        // echo "Width : "+$width+" Height : "+$height;
+                        // $resize = false;
+                        // if($width>$height){
+                        //     $resize = true;
+                        //     $width = $height;
+                        // }else if($height>$width){
+                        //     $resize = true;
+                        //     $height = $width;
+                        // }
+                        // if(resize==true){
+                        //     $img = imagecreatefrompng('images/'+$fichier['nom']);
+                        //     $newImg = imagecrop($img, ['x' => 0, 'y' => 0, 'width' => $width, 'height' => $height]);
+                        //     imagepng($newImg, "cropped_"+$fichier['nom']);
+                        //     $fichier['nom'] = "cropped_"+$fichier['nom'];
+                        //     imagedestroy($newImg);
+                        //     imagedestroy($img);
+                        // }
                     }
                 }
             }

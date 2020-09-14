@@ -8,5 +8,4 @@
      require_once 'ajoutArticleControleur.php';
      require_once 'articleControleur.php';
      require_once 'listeArticlesControleur.php';
-     require_once 'profilControleur.php';
 ?>

@@ -12,6 +12,8 @@
         $form['valide'] = true;      
 
         $upload = new Upload(array('png', 'gif', 'jpg', 'jpeg'), 'images', 800000);
+
+        
         $photo = $upload->enregistrer('photo');
 
         if ($inputPassword!=$inputPassword2){        
@@ -25,7 +27,7 @@
             $form['message'] = 'Problème d\'insertion dans la table utilisateur ';
           }else{
             $unProfil = $profil->connect($inputLogin);
-            $_SESSION['login'] = $inputPseudo['pseudo'];                
+            $_SESSION['login'] = $inputPseudo;                
             $_SESSION['role'] = $role;
             $_SESSION['image'] = $photo['nom'];    
             header("Location:index.php");    
