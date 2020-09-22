@@ -7,7 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+    
     <title>{% block title %}Le Sicariat-{% endblock %}</title>
   </head>
   <body>
@@ -46,27 +46,25 @@
         <form class="form-inline my-2 my-lg-0">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                  {%if session.login is defined %}                
+                  {% if session.login is defined %}                
 					          <li><a class="nav-link text-white" href="index.php?page=deconnexion">Se déconnecter</a></li>
-					          <li><a class="nav-link text-white" href="index.php?page=profil">Mon Profil</a></li>
 				          {% else %}                  
 					          <li><a class="nav-link text-white" href="index.php?page=connexion">Se connecter</a></li>
 					          <li><a class="nav-link text-white" href="index.php?page=inscription">S'inscrire</a></li>           
 				          {% endif %}   
 					          <li></li>
-				          {%if session.login is defined %}
+				          {% if session.login is defined %}
                     <li>
-                      <div class="card xs-4" style="max-width: 300px;">
+                      <div class="card xs-4" style="max-width: 300px; max-height: 45px;">
                         <div class="row no-gutters">
                         {% if session.image is defined %}
                           <div class="col-3 float-md-left">
-                            <img src="images/{{session.image}}" class="card-img" alt="...">
+                            <img src="images/{{session.image}}" class="card-img" alt="..." style="max-height: 45px;">
                           </div>
                         {% endif %}  
                           <div class="col-xs-9">
-                            <div class="card-body">
-                              <h6 class="card-title">{{session.login}}</h6>
-                              <a href="index.php?page=profil&profil={{session.login}}" class="card-link">Mon profil</a>
+                            <div class="card-body-responsive">
+                              <a href="index.php?page=profil&profil={{session.login}}" class="card-link">{{session.login}}</a>
                             </div>
                           </div>
                         </div>
@@ -75,6 +73,8 @@
 				          {% endif %}
                 </ul>
               </div>
+              <input id="inputRecherche" name="inputRecherche" class="form-control mr-sm-2" type="text" placeholder="...">
+              <button name="btRecherche" id="btRecherche" class="btn btn-secondary my-2 my-sm-0" href="index.php?page=recherche" type="submit">Rechercher</button>
           </form>
       </nav>
     	{% block contenu %}{% endblock %}

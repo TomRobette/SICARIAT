@@ -27,10 +27,8 @@
             <td><a href="index.php?page=article&id={{article.idArticle}}">Voir</a></td>
             <td><a>
             {% if article.nbVues!=null %}
-                {{article.nbVues}}
-            {% else %}
-                0
-            {% endif %}     Vues</a></td>
+                {{article.nbVues}} Vues
+            {% endif %}</a></td>
         </tr>
     {% endfor %}
 

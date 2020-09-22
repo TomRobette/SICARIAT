@@ -1,0 +1,40 @@
+{% extends "base.html.twig" %}
+{% block title %} {{ parent() }} Résultat de votre recherche {% endblock %}
+
+{% block contenu %} 
+<h1>Résultat de votre recherche</h1> 
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for article in resultats %}
+        <tr>
+            <td>{{article.titre}}</td>
+            <td>{{article.pseudo}}</td>
+            <td><a>Dernière modification le 
+            {% if article.dateModif!=null %}
+                {{article.dateModif}}
+            {% else %}
+                {{article.dateCreation}}
+            {% endif %}</a></td>
+            <td><a href="index.php?page=article&id={{article.idArticle}}">Voir</a></td>
+            <td><a>
+            {% if article.nbVues!=null %}
+                {{article.nbVues}} Vues
+            {% endif %} </a></td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+
+</form>
+
+{% endblock %}

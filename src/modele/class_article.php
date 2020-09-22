@@ -10,6 +10,7 @@
 		private $getReplies;
 		private $selectLimitReplies;
 		private $selectCountReplies;
+		private $recherche;
 
         public function __construct($db){
             $this->db=$db;
@@ -21,7 +22,16 @@
 			$this->addReply = $this->db->prepare("INSERT INTO reponse(idProfil, contenu, idArticle, dateCreation)values(:idProfil,:contenu,:idArticle,NOW())");
 			$this->getReplies = $this->db->prepare("SELECT RP.contenu, P.pseudo, R.libelle, P.photo, A.id AS idArticle FROM article A, profil P, role R, reponse RP WHERE P.idRole=R.id AND RP.idProfil=P.id AND RP.idArticle=A.id AND A.id=:id");
 			$this->selectLimitReplies = $db->prepare("SELECT RP.contenu, P.pseudo, R.libelle, P.photo, A.id AS idArticle FROM article A, profil P, role R, reponse RP WHERE P.idRole=R.id AND RP.idProfil=P.id AND RP.idArticle=A.id ORDER BY RP.dateCreation LIMIT :inf,:limite");
-			$this->selectCountReplies =$db->prepare("SELECT COUNT(RP.id) AS nb FROM reponse RP, article A WHERE RP.idArticle=A.id");
+			$this->selectCountReplies = $db->prepare("SELECT COUNT(RP.id) AS nb FROM reponse RP, article A WHERE RP.idArticle=A.id");
+			$this->recherche = $db->prepare("SELECT A.idProfil, P.pseudo, R.libelle, P.photo, A.id AS idArticle, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE P.idRole=R.id AND RP.idProfil=P.id AND RP.idArticle=A.id AND A.titre LIKE :recherche OR A.contenu LIKE :recherche OR P.pseudo LIKE :recherche ORDER BY designation");
+		}
+
+		public function recherche($recherche){      
+			$this->recherche->execute(array('recherche'=>'%'.$recherche.'%'));      
+			if ($this->recherche->errorCode()!=0){           
+				print_r($this->recherche->errorInfo());        
+			}      
+			return $this->recherche->fetchAll();    
 		}
 
         public function insert ($idProfil,$titre,$contenu){
