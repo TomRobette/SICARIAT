@@ -23,7 +23,7 @@
 			$this->connect = $this->db->prepare("SELECT pseudo, email, idRole, mdp, photo FROM profil WHERE email=:email");
 			$this->connectPseudo = $this->db->prepare("SELECT pseudo, email, idRole, mdp, photo FROM profil WHERE pseudo=:pseudo");
 			$this->selectById = $this->db->prepare("SELECT P.id, P.pseudo, P.email, P.idRole, P.photo, R.libelle, P.dateInscription, P.nbArticles, P.nbReplies, P.hideEmail FROM profil P, role R WHERE P.idRole=R.id AND P.id=:id");
-			$this->selectByPseudo = $this->db->prepare("SELECT P.id, P.pseudo, P.email, P.idRole, R.libelle, P.photo, P.dateInscription, P.nbArticles, P.nbReplies, P.hideEmail FROM profil P, role R WHERE P.idRole=R.id AND pseudo=:pseudo");
+			$this->selectByPseudo = $this->db->prepare("SELECT P.id, P.pseudo, P.email, P.idRole, R.libelle, P.photo, P.dateInscription, P.nbArticles, P.nbReplies, P.hideEmail FROM profil P, role R WHERE P.idRole=R.id AND P.pseudo=:pseudo");
 			$this->show = $this->db->prepare("SELECT id, pseudo, email, idRole, photo FROM profil");
 			$this->update = $this->db->prepare("UPDATE profil SET pseudo=:pseudo, idRole=:idRole, photo=:photo WHERE id=:id");
 			$this->delete = $this->db->prepare("DELETE FROM profil WHERE id=:id");

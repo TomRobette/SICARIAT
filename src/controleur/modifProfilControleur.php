@@ -22,25 +22,25 @@
                     $form['photo'] = $photo['nom'];
                 }
     
-                if($inputPassword != null && inputPassword2 != null){
-                    if ($inputPassword!=$inputPassword2){        
-                        $form['valide'] = false;          
-                        $form['message'] = 'Les mots de passe sont différents';      
-                    }else{
-                        $exec=$profil->modify($unProfil['id'], $inputPseudo, $inputEmail, password_hash($inputPassword,PASSWORD_DEFAULT), $form['photo']);
-                        if(!$exec){
-                            $form['valide'] = false;
-                            $form['message'] = 'Problème d\'insertion dans la table profil ';
-                        }else{
-                            $_SESSION['login'] = $inputPseudo;
-                            $_SESSION['image'] = $form['photo'];    
-                            header("Location:index.php");    
-                        }
-                    }
-                    $form['email'] = $inputEmail;
+                $mdp = $inputPassword;
+                $mdp2 = $inputPassword2;
+                $icn = $form['photo'];
+
+                if($mdp == null || $mdp == ""){
+                    $mdp = $unProfil['mdp'];
+                }
+                if($mdp2 == null || $mdp2 == ""){
+                    $mdp2 = $unProfil['mdp'];
+                }    
+                if($photo == null || $photo == ""){
+                    $icn = $unProfil['photo'];
+                }
+
+                if ($inputPassword!=$inputPassword2){        
+                    $form['valide'] = false;          
+                    $form['message'] = 'Les mots de passe sont différents';      
                 }else{
-                    $profil=new Profil($db);                
-                    $exec=$profil->modify($unProfil['id'], $inputPseudo, $inputEmail, $unProfil['mdp'], $form['photo']);
+                    $exec=$profil->modify($unProfil['id'], $inputPseudo, $inputEmail, $mdp, $icn);
                     if(!$exec){
                         $form['valide'] = false;
                         $form['message'] = 'Problème d\'insertion dans la table profil ';
@@ -49,8 +49,8 @@
                         $_SESSION['image'] = $form['photo'];    
                         header("Location:index.php");    
                     }
-                    $form['email'] = $inputEmail;
                 }
+                $form['email'] = $inputEmail;
             }
         }else{
             $form['message'] = 'Profil non précisé';
