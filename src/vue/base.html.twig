@@ -61,6 +61,10 @@
                           <div class="col-3 float-md-left">
                             <img src="images/{{session.image}}" class="card-img" alt="..." style="max-height: 45px;">
                           </div>
+                        {% else %}
+                          <div class="col-3 float-md-left">
+                            <img src="images/blank.png" class="card-img" alt="..." style="max-height: 45px;">
+                          </div>
                         {% endif %}  
                           <div class="col-xs-9">
                             <div class="card-body-responsive">

@@ -9,9 +9,15 @@
     <div class="card-header">
         <div class="card mb-3" style="max-width: 540px;">
         <div class="row no-gutters">
+        {% if form['profil'].photo|trim is not empty %}
             <div class="col-md-4">
                 <img src="images/{{form['profil'].photo}}" class="card-img" alt="...">
             </div>
+        {% else %}
+            <div class="col-md-4">
+                <img src="images/blank.png" class="card-img" alt="...">
+            </div>
+        {% endif %}
             <div class="col-md-8">
                 <div class="card-body">
                     <h5 class="card-title">{{form['profil'].pseudo}}</h5>
@@ -55,9 +61,15 @@
     <div class="card-header">
         <div class="card mb-3" style="max-width: 540px;">
         <div class="row no-gutters">
+            {% if reply.photo|trim is not empty %}
             <div class="col-md-4">
                 <img src="images/{{reply.photo}}" class="card-img" alt="...">
             </div>
+            {% else %}
+            <div class="col-md-4">
+                <img src="images/blank.png" class="card-img" alt="...">
+            </div>
+            {% endif %}
             <div class="col-md-8">
                 <div class="card-body">
                     <h5 class="card-title">{{reply.pseudo}}</h5>

@@ -10,6 +10,7 @@ function getPage($db){
     $lesPages['ajoutarticle']="ajoutArticleControleur";
     $lesPages['listearticles']="listeArticlesControleur";
     $lesPages['recherche']="accueilControleur";
+    $lesPages['maintenance']="maintenanceControleur";
     
     if($db!=NULL){
         if(isset($_GET['page'])) {
