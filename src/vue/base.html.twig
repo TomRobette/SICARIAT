@@ -43,7 +43,7 @@
 				    {% endif %}
           </ul>
         </div>
-        <form class="form-inline my-2 my-lg-0">
+        <form method="POST" action="index.php?page=recherche" class="form-inline my-2 my-lg-0" enctype="multipart/form-data">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                   {% if session.login is defined %}                
@@ -77,8 +77,8 @@
 				          {% endif %}
                 </ul>
               </div>
-              <input id="inputRecherche" name="inputRecherche" class="form-control mr-sm-2" type="text" placeholder="...">
-              <button name="btRecherche" id="btRecherche" class="btn btn-secondary my-2 my-sm-0" href="index.php?page=recherche" type="submit">Rechercher</button>
+              <input id="inputRecherche" name="inputRecherche" class="form-control mr-sm-2" type="search" placeholder="...">
+              <button class="btn btn-secondary my-2 my-sm-0" type="submit">Rechercher</button>
           </form>
       </nav>
     	{% block contenu %}{% endblock %}

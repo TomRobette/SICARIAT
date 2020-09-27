@@ -8,7 +8,7 @@
         $inputPassword= $_POST['inputPassword'];       
         $inputPassword2=$_POST['inputPassword2'];   
         $inputPseudo = $_POST['inputPseudo'];
-        $role = $_POST['role'];      
+        $role = 3;      
         $form['valide'] = true;      
 
         $upload = new Upload(array('png', 'gif', 'jpg', 'jpeg'), 'images', 800000);

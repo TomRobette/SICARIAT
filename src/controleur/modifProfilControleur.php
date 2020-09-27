@@ -22,8 +22,8 @@
                     $form['photo'] = $photo['nom'];
                 }
     
-                $mdp = $inputPassword;
-                $mdp2 = $inputPassword2;
+                $mdp = password_hash($inputPassword,PASSWORD_DEFAULT);
+                $mdp2 = password_hash($inputPassword2,PASSWORD_DEFAULT);
                 $icn = $form['photo'];
 
                 if($mdp == null || $mdp == ""){
