@@ -9,7 +9,7 @@ function getPage($db){
     $lesPages['article']="articleControleur";
     $lesPages['ajoutarticle']="ajoutArticleControleur";
     $lesPages['listearticles']="listeArticlesControleur";
-    $lesPages['recherche']="accueilControleur";
+    $lesPages['recherche']="rechercheControleur";
     $lesPages['maintenance']="maintenanceControleur";
     
     if($db!=NULL){

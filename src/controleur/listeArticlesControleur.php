@@ -6,7 +6,7 @@
         $article = new Article($db);
         $liste = $article->getArticle();
 
-        $limite=10;
+        $limite=8;
         if(!isset($_GET['nopage'])){
             $inf=0;
             $nopage=0;

@@ -7,7 +7,7 @@
 {% for article in liste %}
     <div class="row justify-content-center">            
         <div class="col-8 bg-white p-2 m-0 text-primary">
-            <a href="index.php?page=article&id={{article.idArticle}}" class="list-group-item list-group-item-action  md-3">
+            <a href="index.php?page=article&id={{article.idArticle}}" class="list-group-item list-group-item-action md-3">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{article.titre}}</h5>
                     <small>
@@ -17,6 +17,7 @@
                         {{article.dateCreation}}
                     {% endif %}
                     </small>
+                    
                 </div>
                 <p class="mb-1">{{article.contenu|slice(start, 100)}}...</p>
                 {% if article.nbVues!=null %}
@@ -25,6 +26,15 @@
                     </small>      
                 {% endif %}
             </a>
+            {% if session.role==1 %}
+                <div class="position-relative-left">
+                    <button href="" type="button" class="btn btn-outline-dark">
+                        <span class="material-icons">
+                        delete
+                        </span>
+                    </button>
+                </div>    
+            {% endif %}
         </div>
     </div>    
 {% endfor %}
@@ -34,15 +44,20 @@
 {% set nb = form.nbpages %}
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center m-4 p-4">
-            <li class="page-item {% if form.nopage == 0 %}disabled{% endif %}">
+            <li class="page-item-alert {% if form.nopage == 0 %}disabled{% endif %}">
                 <a class="page-link" href="index.php?page=listearticles&nopage={{ 0 }}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
             {% for i in 1..nb %}
-                <li class="page-item {% if i ==form.nopage +1 %} active{% endif %}"><a class="page-link" href="index.php?page=listearticles&nopage={{ i-1 }}">{{ i }}<span class="sronly"></span></a></li>
+                <li class="page-item-alert {% if i ==form.nopage +1 %} active{% endif %}">
+                    <a class="page-link" href="index.php?page=listearticles&nopage={{ i-1 }}">
+                    {{ i }}
+                    <span class="sronly"></span>
+                    </a>
+                </li>
             {% endfor %}
-            <li class="page-item {% if form.nopage == form.nbpages-1 %}disabled{% endif %}">
+            <li class="page-item-alert {% if form.nopage == form.nbpages-1 %}disabled{% endif %}">
                 <a class="page-link" href="index.php?page=listearticles&nopage={{ nb-1 }}" aria-label="Next" >
                     <span aria-hidden="true">&raquo;</span>
                 </a>

@@ -10,6 +10,8 @@
 		private $getReplies;
 		private $selectLimitReplies;
 		private $selectCountReplies;
+		private $selectLimitResearch;
+		private $selectCountResearch;
 		private $recherche;
 
         public function __construct($db){
@@ -17,13 +19,15 @@
             $this->insert = $this->db->prepare("INSERT INTO article(idProfil, titre, contenu, dateCreation)values(:idProfil,:titre,:contenu,NOW())");
             $this->getArticle = $this->db->prepare("SELECT A.idProfil, P.pseudo, R.libelle, P.photo, A.id AS idArticle, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE A.idProfil=P.id AND P.idRole=R.id");
 			$this->selectById = $this->db->prepare("SELECT A.idProfil, P.pseudo, R.libelle, P.photo, A.id AS idArticle, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE A.idProfil=P.id AND P.idRole=R.id AND A.id=:id");
-			$this->selectLimit = $db->prepare("SELECT P.id, P.pseudo, R.libelle, P.photo, A.id AS idArticle, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE A.idProfil=P.id AND P.idRole=R.id ORDER BY P.id LIMIT :inf,:limite");
-			$this->selectCount =$db->prepare("SELECT COUNT(*) AS nb FROM article");
+			$this->selectLimit = $this->db->prepare("SELECT P.id, P.pseudo, R.libelle, P.photo, A.id AS idArticle, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE A.idProfil=P.id AND P.idRole=R.id ORDER BY P.id LIMIT :inf,:limite");
+			$this->selectCount =$this->db->prepare("SELECT COUNT(*) AS nb FROM article");
 			$this->addReply = $this->db->prepare("INSERT INTO reponse(idProfil, contenu, idArticle, dateCreation)values(:idProfil,:contenu,:idArticle,NOW())");
 			$this->getReplies = $this->db->prepare("SELECT RP.contenu, P.pseudo, R.libelle, P.photo, A.id AS idArticle FROM article A, profil P, role R, reponse RP WHERE P.idRole=R.id AND RP.idProfil=P.id AND RP.idArticle=A.id AND A.id=:id");
-			$this->selectLimitReplies = $db->prepare("SELECT RP.contenu, P.pseudo, R.libelle, P.photo, A.id AS idArticle FROM article A, profil P, role R, reponse RP WHERE P.idRole=R.id AND RP.idProfil=P.id AND RP.idArticle=A.id ORDER BY RP.dateCreation LIMIT :inf,:limite");
-			$this->selectCountReplies = $db->prepare("SELECT COUNT(RP.id) AS nb FROM reponse RP, article A WHERE RP.idArticle=A.id");
-			$this->recherche = $db->prepare("SELECT A.idProfil, P.pseudo, R.libelle, P.photo, A.id AS idArticle, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE P.idRole=R.id AND RP.idProfil=P.id AND RP.idArticle=A.id AND A.titre LIKE :recherche OR A.contenu LIKE :recherche OR P.pseudo LIKE :recherche ORDER BY designation");
+			$this->selectLimitReplies = $this->db->prepare("SELECT RP.contenu, P.pseudo, R.libelle, P.photo, A.id AS idArticle FROM article A, profil P, role R, reponse RP WHERE P.idRole=R.id AND RP.idProfil=P.id AND RP.idArticle=A.id ORDER BY RP.dateCreation LIMIT :inf,:limite");
+			$this->selectCountReplies = $this->db->prepare("SELECT COUNT(RP.id) AS nb FROM reponse RP, article A WHERE RP.idArticle=A.id");
+			$this->recherche = $this->db->prepare("SELECT A.idProfil, P.pseudo, R.libelle, P.photo, A.id AS idArticle, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE P.idRole=R.id AND A.idProfil=P.id AND /*A.titre LIKE :recherche OR*/ A.contenu LIKE :recherche /*OR P.pseudo LIKE :recherche*/ ORDER BY A.dateModif");
+			$this->selectLimitResearch = $this->db->prepare("SELECT A.idProfil, P.pseudo, R.libelle, P.photo, A.id AS idArticle, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE P.idRole=R.id AND A.idProfil=P.id AND /*A.titre LIKE :recherche OR*/ A.contenu LIKE :recherche /*OR P.pseudo LIKE :recherche*/ ORDER BY A.dateModif LIMIT :inf,:limite");
+			$this->selectCountResearch = $this->db->prepare("SELECT COUNT(id) AS nb FROM article");
 		}
 
 		public function recherche($recherche){      
@@ -32,6 +36,24 @@
 				print_r($this->recherche->errorInfo());        
 			}      
 			return $this->recherche->fetchAll();    
+		}
+
+		public function selectLimitResearch($inf, $limite){
+			$this->selectLimitResearch->bindParam(':inf', $inf, PDO::PARAM_INT);
+			$this->selectLimitResearch->bindParam(':limite', $limite, PDO::PARAM_INT);
+			$this->selectLimitResearch->execute();
+			if ($this->selectLimitResearch->errorCode()!=0){
+				print_r($this->selectLimitResearch->errorInfo());
+			}
+			return $this->selectLimitResearch->fetchAll();
+		}
+
+		public function selectCountResearch(){
+			$this->selectCountResearch->execute();
+			if ($this->selectCountResearch->errorCode()!=0){
+				print_r($this->selectCountResearch->errorInfo());
+			}
+			return $this->selectCountResearch->fetch();
 		}
 
         public function insert ($idProfil,$titre,$contenu){
