@@ -1,6 +1,39 @@
 <?php
-    function accueilControleur($twig){
-        echo $twig -> render('index.html.twig',array());
+    function accueilControleur($twig, $db){
+        $liste = array();
+
+        $profil = new Profil($db);
+        $liste = $profil->show();
+
+        if(isset($_GET['id'])){
+            $exec=$profil->delete($_GET['id']);
+           
+            if (!$exec){
+                $etat = false;
+            }else{
+                $etat = true;
+            }
+            header('Location: index.php?page=accueil&etat='.$etat);
+            exit;
+        }
+
+        $limite=8;
+        if(!isset($_GET['nopage'])){
+            $inf=0;
+            $nopage=0;
+        }else{
+            $nopage=$_GET['nopage'];
+            $inf=$nopage * $limite;
+        }
+        $r = $profil->selectCount();
+        $nb = $r['nb'];
+
+
+        $liste = $profil->selectLimit($inf,$limite);
+        $form['nbpages'] = ceil($nb/$limite);
+        $form['nopage'] = $nopage;
+
+        echo $twig -> render('index.html.twig',array('form'=>$form,'liste'=>$liste));
     }
 ?>
 
