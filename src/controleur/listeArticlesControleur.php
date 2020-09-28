@@ -6,6 +6,18 @@
         $article = new Article($db);
         $liste = $article->getArticle();
 
+        if(isset($_GET['id'])){
+            $exec=$article->delete($_GET['id']);
+           
+            if (!$exec){
+                $etat = false;
+            }else{
+                $etat = true;
+            }
+            header('Location: index.php?page=listearticles&etat='.$etat);
+            exit;
+        }
+
         $limite=8;
         if(!isset($_GET['nopage'])){
             $inf=0;
