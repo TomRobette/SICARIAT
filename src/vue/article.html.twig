@@ -44,7 +44,7 @@
 
                 <div class="form-group">
                     <label for="inputContenu">Votre réponse :</label>
-                    <input type="text" name="inputContenu" class="form-control" id="inputContenu" placeholder="">
+                    <textarea class="form-control rounded-0" name="inputContenu" id="inputContenu" rows="10"></textarea>
                 </div>
 
                 <button type="submit" name="btPoster" id="btPoster" class="btn btn-primary">Poster</button>
@@ -73,7 +73,7 @@
             <div class="col-md-8">
                 <div class="card-body">
                     <h5 class="card-title">{{reply.pseudo}}</h5>
-                        <p class="card-text"><small class="text-muted">{{reply.libelle}}</small></p>
+                        <p class="card-text"><small class="text-muted">{{reply.libelle|raw}}</small></p>
                         <a href="index.php?page=profil&profil={{reply.pseudo}}" class="card-link">Voir profil</a>
                 </div>
             </div>
