@@ -15,11 +15,12 @@
 		private $selectCountResearch;
 		private $recherche;
 		private $delete;
+		private $vuePlusUn;
 
         public function __construct($db){
             $this->db=$db;
             $this->insert = $this->db->prepare("INSERT INTO article(idProfil, titre, contenu, dateCreation)values(:idProfil,:titre,:contenu,NOW())");
-            $this->getArticle = $this->db->prepare("SELECT A.idProfil, P.pseudo, R.libelle, P.photo, A.id AS idArticle, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE A.idProfil=P.id AND P.idRole=R.id");
+            $this->getArticle = $this->db->prepare("SELECT COUNT(reponse.id), A.idProfil, P.pseudo, R.libelle, P.photo, A.id AS idArt, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, reponse WHERE A.idProfil=P.id AND idArt=reponse.idArticle GROUP BY idArt ORDER BY idArt DESC");
 			$this->selectById = $this->db->prepare("SELECT A.idProfil, P.pseudo, R.libelle, P.photo, A.id AS idArticle, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE A.idProfil=P.id AND P.idRole=R.id AND A.id=:id");
 			$this->selectLimit = $this->db->prepare("SELECT P.id, P.pseudo, R.libelle, P.photo, A.id AS idArticle, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE A.idProfil=P.id AND P.idRole=R.id ORDER BY P.id LIMIT :inf,:limite");
 			$this->selectCount =$this->db->prepare("SELECT COUNT(*) AS nb FROM article");
@@ -32,6 +33,23 @@
 			$this->selectLimitResearch = $this->db->prepare("SELECT A.idProfil, P.pseudo, R.libelle, P.photo, A.id AS idArticle, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE P.idRole=R.id AND A.idProfil=P.id AND /*A.titre LIKE :recherche OR*/ A.contenu LIKE :recherche /*OR P.pseudo LIKE :recherche*/ ORDER BY A.dateModif LIMIT :inf,:limite");
 			$this->selectCountResearch = $this->db->prepare("SELECT COUNT(id) AS nb FROM article");
 			$this->delete = $this->db->prepare("DELETE FROM article WHERE id=:id");
+			$this->vuePlusUn = $this->db->prepare("UPDATE article SET nbVues=:nbVues WHERE id=:id");
+		}
+
+		public function vuePlusUn($id){
+			$r = true;
+			$article = $this->selectById($id);
+			$nbVues = $article['nbVues'];
+			if($nbVues==null){
+				$nbVues=0;
+			}
+			$nbVues = $nbVues+1;
+			$this->vuePlusUn->execute(array('nbVues'=>$nbVues, ':id'=>$id));
+			if ($this->vuePlusUn->errorCode()!=0){
+				print_r($this->vuePlusUn->errorInfo());
+				$r=false;
+			}
+			return $r;
 		}
 
 		public function deleteReply($id){

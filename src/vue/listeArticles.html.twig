@@ -17,13 +17,18 @@
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{article.titre}}</h5>
                     <small>
+                    Dernière modification le 
                     {% if article.dateModif!=null %}
-                        {{article.dateModif}}
+                        {{article.dateModif|date("d/m/Y")}}
                     {% else %}
-                        {{article.dateCreation}}
+                        {{article.dateCreation|date("d/m/Y")}}
                     {% endif %}
                     </small>
-                    
+                    <br>
+                    <small>
+                        Par {{article.pseudo}}
+                        <!--Par <a href="index.php?page=profil&profil={{article.pseudo}}" class="card-link">{{article.pseudo}}</a>-->
+                    </small>                     
                 </div>
                 <p class="mb-1">{{article.contenu|slice(start, 100)}}...</p>
                 {% if article.nbVues!=null %}
@@ -31,6 +36,17 @@
                     {{article.nbVues}} Vues
                     </small>      
                 {% endif %}
+                {% if article.0!=null %}
+                    <br>
+                    <small>
+                        {{article.0}} réponses
+                    </small>   
+                {% else %}
+                    <br>
+                    <small>
+                        0 réponses
+                    </small> 
+                {% endif %}    
             </a>
             {% if session.role==1 %}
                 <div class="position-relative-left">

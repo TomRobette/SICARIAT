@@ -9,13 +9,13 @@
                 $profil = new Profil($db);
                 $unProfil = $profil->selectById($unArticle['idProfil']);
                 $form['profil'] = $unProfil;
+                $error = $article->vuePlusUn($_GET['id']);
             }else{
                 $form['message'] = 'Article incorrect';
             }
         }else{
             $form['message'] = 'Article non précisé';
         }
-
 
         $listeReplies = array();
         $listeReplies = $article->getReplies($unArticle['idArticle']);
