@@ -1,0 +1,60 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{parent()}}Forums{% endblock %}
+
+{% block contenu %}
+<!--
+{% if form.etat is defined %}
+    {% if form.etat == true %}
+        <h1 class="h3 mb-3 font-weight-normal">Suppression réussie</h1>
+    {% else %}
+        <h1 class="alert alert-danger" role="alert">Problème lors de la suppréssion</h1>
+    {% endif %}
+{% endif %} 
+-->
+<div class="row justify-content-center">     
+    <div class="card col-8 bg-white p-2 m-0">
+        <div class="card-body">
+            <h5 class="card-title">Liste des forums</h5>
+        </div>
+    </div>
+</div>
+{% for forum in liste %}
+    <div class="row justify-content-center">            
+        <div class="col-8 bg-white p-2 m-0 text-primary">
+            <a href="index.php?page=listearticles&idForum={{forum.id}}" class="list-group-item list-group-item-action md-3">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{forum.libelle}}</h5>
+                </div>
+                {% if forum.nbArticles!=null %}
+                    <small>  
+                    {{forum.nbArticles}} articles
+                    </small>      
+                {% endif %}
+                {% if forum.nbVues!=null %}
+                    <br>
+                    <small>
+                        {{forum.nbVues}} vues
+                    </small>   
+                {% else %}
+                    <br>
+                    <small>
+                        0 vues
+                    </small> 
+                {% endif %}    
+            </a>
+            {% if session.role==1 %}
+                <div class="position-relative-left">
+                    <button type="button" class="btn btn-outline-dark">
+                        <a href="index.php?page=listeForums&id={{forum.id}}" class="text-dark">
+                            <span class="material-icons">
+                            delete
+                            </span>
+                        </a>    
+                    </button>
+                </div>    
+            {% endif %}
+        </div>
+    </div>    
+{% endfor %}
+{% endblock %}

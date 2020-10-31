@@ -3,6 +3,7 @@
         private $db;
         private $insert;
         private $getArticle;
+        private $getArticleByForum;
         private $selectById;
 		private $selectLimit;
 		private $selectCount;
@@ -16,14 +17,16 @@
 		private $recherche;
 		private $delete;
 		private $vuePlusUn;
+		private $getForums;
 
         public function __construct($db){
             $this->db=$db;
-            $this->insert = $this->db->prepare("INSERT INTO article(idProfil, titre, contenu, dateCreation)values(:idProfil,:titre,:contenu,NOW())");
-            $this->getArticle = $this->db->prepare("SELECT COUNT(reponse.id), A.idProfil, P.pseudo, R.libelle, P.photo, A.id AS idArt, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, reponse WHERE A.idProfil=P.id AND idArt=reponse.idArticle GROUP BY idArt ORDER BY idArt DESC");
+            $this->insert = $this->db->prepare("INSERT INTO article(idProfil, titre, contenu, dateCreation, id_forum)values(:idProfil,:titre,:contenu,NOW(),:id_forum)");
+            $this->getArticle = $this->db->prepare("SELECT COUNT(R.id), A.id, A.idProfil, P.pseudo, P.photo, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, reponse R WHERE A.idProfil=P.id AND R.idArticle=A.id GROUP BY A.id ORDER BY COUNT(R.id) DESC");
+			$this->getArticleByForum = $this->db->prepare("SELECT COUNT(R.id), F.libelle AS forum, F.description, A.id, A.idProfil, P.pseudo, P.photo, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues, A.id_forum FROM article A, profil P, reponse R, forum F WHERE A.idProfil=P.id AND R.idArticle=A.id AND F.id=A.id_forum AND F.id=:id GROUP BY A.id ORDER BY COUNT(R.id) DESC");
 			$this->selectById = $this->db->prepare("SELECT A.idProfil, P.pseudo, R.libelle, P.photo, A.id AS idArticle, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE A.idProfil=P.id AND P.idRole=R.id AND A.id=:id");
-			$this->selectLimit = $this->db->prepare("SELECT P.id, P.pseudo, R.libelle, P.photo, A.id AS idArticle, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE A.idProfil=P.id AND P.idRole=R.id ORDER BY P.id LIMIT :inf,:limite");
-			$this->selectCount =$this->db->prepare("SELECT COUNT(*) AS nb FROM article");
+			$this->selectLimit = $this->db->prepare("SELECT COUNT(R.id), F.libelle AS forum, F.description, A.id, A.idProfil, P.pseudo, P.photo, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues, A.id_forum FROM article A, profil P, reponse R, forum F WHERE A.idProfil=P.id AND R.idArticle=A.id AND F.id=A.id_forum AND F.id=:id GROUP BY A.id LIMIT :inf,:limite");
+			$this->selectCount =$this->db->prepare("SELECT COUNT(*) AS nb FROM article A, forum F WHERE F.id=A.id_forum AND F.id=:id");
 			$this->addReply = $this->db->prepare("INSERT INTO reponse(idProfil, contenu, idArticle, dateCreation)values(:idProfil,:contenu,:idArticle,NOW())");
 			$this->getReplies = $this->db->prepare("SELECT RP.contenu, P.pseudo, R.libelle, P.photo, A.id AS idArticle, RP.id AS idReply FROM article A, profil P, role R, reponse RP WHERE P.idRole=R.id AND RP.idProfil=P.id AND RP.idArticle=A.id AND A.id=:id");
 			$this->deleteReply = $this->db->prepare("DELETE FROM reponse WHERE id=:id");
@@ -34,6 +37,7 @@
 			$this->selectCountResearch = $this->db->prepare("SELECT COUNT(id) AS nb FROM article");
 			$this->delete = $this->db->prepare("DELETE FROM article WHERE id=:id");
 			$this->vuePlusUn = $this->db->prepare("UPDATE article SET nbVues=:nbVues WHERE id=:id");
+			$this->getForums = $this->db->prepare("SELECT F.id, F.libelle, F.description, COUNT(A.id) AS nbArticles, SUM(A.nbVues) AS nbVues FROM forum F, article A WHERE A.id_forum=F.id");
 		}
 
 		public function vuePlusUn($id){
@@ -102,9 +106,9 @@
 			return $this->selectCountResearch->fetch();
 		}
 
-        public function insert ($idProfil,$titre,$contenu){
+        public function insert($idProfil,$titre,$contenu,$id_forum){
 			$r = true;
-			$this->insert->execute(array(':idProfil'=>$idProfil,':titre'=>$titre,':contenu'=>$contenu));
+			$this->insert->execute(array(':idProfil'=>$idProfil,':titre'=>$titre,':contenu'=>$contenu,':id_forum'=>$id_forum));
 			
 			if($this->insert->errorCode()!=0){
 				print_r($this->insert->errorInfo());
@@ -121,6 +125,22 @@
 			return $this->getArticle->fetchAll();
 		}
 
+		public function getArticleByForum($id){
+			$this->getArticleByForum->execute(array(':id'=>$id));
+			if ($this->getArticleByForum->errorCode()!=0){
+				print_r($this->getArticleByForum->errorInfo());
+			}
+			return $this->getArticleByForum->fetchAll();
+		}
+        
+        public function getForums(){
+			$this->getForums->execute();
+			if ($this->getForums->errorCode()!=0){
+				print_r($this->getForums->errorInfo());
+			}
+			return $this->getForums->fetchAll();
+		}
+
         public function selectById($id){
 			$this->selectById->execute(array(':id'=>$id));
 			if ($this->selectById->errorCode()!=0){
@@ -129,9 +149,10 @@
 			return $this->selectById->fetch();
 		}
 
-		public function selectLimit($inf, $limite){
+		public function selectLimit($inf, $limite, $id){
 			$this->selectLimit->bindParam(':inf', $inf, PDO::PARAM_INT);
 			$this->selectLimit->bindParam(':limite', $limite, PDO::PARAM_INT);
+			$this->selectLimit->bindParam(':id', $id, PDO::PARAM_INT);
 			$this->selectLimit->execute();
 			if ($this->selectLimit->errorCode()!=0){
 				print_r($this->selectLimit->errorInfo());
@@ -139,8 +160,8 @@
 			return $this->selectLimit->fetchAll();
 		}
 
-		public function selectCount(){
-			$this->selectCount->execute();
+		public function selectCount($id){
+			$this->selectCount->execute(array(':id'=>$id));
 			if ($this->selectCount->errorCode()!=0){
 				print_r($this->selectCount->errorInfo());
 			}

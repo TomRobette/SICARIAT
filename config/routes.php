@@ -11,6 +11,7 @@ function getPage($db){
     $lesPages['listearticles']="listeArticlesControleur";
     $lesPages['recherche']="rechercheControleur";
     $lesPages['maintenance']="maintenanceControleur";
+    $lesPages['listeforums']="listeForumsControleur";
     
     if($db!=NULL){
         if(isset($_GET['page'])) {

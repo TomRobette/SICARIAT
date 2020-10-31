@@ -10,4 +10,5 @@
      require_once 'listeArticlesControleur.php';
      require_once 'maintenanceControleur.php';
      require_once 'rechercheControleur.php';
+     require_once 'listeForumsControleur.php';
 ?>

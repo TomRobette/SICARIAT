@@ -1,12 +1,12 @@
 <?php
-    function listeArticlesControleur($twig, $db){
+    function listeForumsControleur($twig, $db){
 
         $liste = array();
 
         $article = new Article($db);
-        $liste = $article->getArticleByForum($_GET['idForum']);
+        $liste = $article->getForums();
 
-        if(isset($_GET['id'])){
+        /*if(isset($_GET['id'])){
             $exec=$article->delete($_GET['id']);
            
             if (!$exec){
@@ -14,12 +14,11 @@
             }else{
                 $etat = true;
             }
-            header('Location: index.php?page=listearticles&etat='.$etat);
+            header('Location: index.php?page=listeforums&etat='.$etat);
             exit;
-        }
-        /*
+        }*/
 
-        $limite=8;
+        /*$limite=8;
         if(!isset($_GET['nopage'])){
             $inf=0;
             $nopage=0;
@@ -27,16 +26,16 @@
             $nopage=$_GET['nopage'];
             $inf=$nopage * $limite;
         }
-        $r = $article->selectCount($_GET['idForum']);
+        $r = $article->selectCount();
         $nb = $r['nb'];
 
 
-        $liste = $article->selectLimit($inf,$limite,$_GET['idForum']);
+        $liste = $article->selectLimit($inf,$limite);
         $form['nbpages'] = ceil($nb/$limite);
         $form['nopage'] = $nopage;*/
 
         
-        echo $twig -> render('listeArticles.html.twig',array(/*'form'=>$form,*/'liste'=>$liste));
+        echo $twig -> render('listeForums.html.twig',array(/*'form'=>$form,*/'liste'=>$liste));
     
     }
 
