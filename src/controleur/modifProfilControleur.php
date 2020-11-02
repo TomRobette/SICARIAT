@@ -12,7 +12,7 @@
                 $inputPseudo = $_POST['inputPseudo'];
                 $form['valide'] = true;      
         
-                $upload = new Upload(array('png', 'gif', 'jpg', 'jpeg'), 'images', 800000);
+                $upload = new Upload(array('png', 'gif', 'jpg', 'jpeg'), 'images', 8000000);
                 
                 
                 $photo = $upload->enregistrer('photo');

@@ -39,7 +39,13 @@ class Upload{
                         // remplacer les caractères autres que lettres, chiffres et point par _                  
                         $fichier['nom'] = preg_replace('/([^.a-z0-9]+)/i', '_', $fichier['nom']);                  
                         // copie du fichier                  
-                        move_uploaded_file($_FILES[$data]['tmp_name'], $this->chemin.'/'.$fichier['nom']);                
+                        move_uploaded_file($_FILES[$data]['tmp_name'], $this->chemin.'/a'.$fichier['nom']);
+                        //system("convert ".$this->chemin.'/a'.$fichier['nom']." -coalesce -repage 0x0 -resize 150x150 -layers Optimize ".$this->chemin.'/'.$fichier['nom']);           
+                        
+                        system("convert ".$this->chemin.'/a'.$fichier['nom']." -resize 150x150^ \ -gravity center -extent 150x150 ".$this->chemin.'/'.$fichier['nom']);           
+                        
+                        
+                        unlink($this->chemin.'/a'.$fichier['nom']);
                     }            
                 }        
             }      
