@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
+    <link rel="icon" href="https://img.icons8.com/pastel-glyph/64/000000/fencing-swords.png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>{% block title %}Le Sicariat-{% endblock %}</title>
@@ -41,6 +42,11 @@
               <a class="nav-link text-white" href="index.php?page=ajoutarticle">Nouvel Article</a>
             </li>         
 				    {% endif %}
+            {%if session.role == 1 %}                
+					  <li>
+              <a class="nav-link text-white" href="index.php?page=ajoutforum">Nouveau Forum</a>
+            </li>         
+				    {% endif %}
           </ul>
         </div>
         <form method="POST" action="index.php?page=recherche" class="form-inline my-2 my-lg-0" enctype="multipart/form-data">
@@ -55,15 +61,15 @@
 					          <li></li>
 				          {% if session.login is defined %}
                     <li>
-                      <div class="card xs-4" style="max-width: 300px; max-height: 45px;">
+                      <div class="card xs-4" style="max-width: 150px; max-height: 150px;">
                         <div class="row no-gutters">
                         {% if session.image is defined %}
                           <div class="col-3 float-md-left">
-                            <img src="images/{{session.image}}" class="card-img" alt="..." style="max-height: 45px;">
+                            <img src="images/{{session.image}}" class="card-img" alt="...">
                           </div>
                         {% else %}
                           <div class="col-3 float-md-left">
-                            <img src="images/blank.png" class="card-img" alt="..." style="max-height: 45px;">
+                            <img src="images/blank.png" class="card-img" alt="...">
                           </div>
                         {% endif %}  
                           <div class="col-xs-9">

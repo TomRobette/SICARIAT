@@ -11,4 +11,5 @@
      require_once 'maintenanceControleur.php';
      require_once 'rechercheControleur.php';
      require_once 'listeForumsControleur.php';
+     require_once 'ajoutForumControleur.php';     
 ?>
