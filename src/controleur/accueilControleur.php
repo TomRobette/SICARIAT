@@ -16,6 +16,10 @@
             header('Location: index.php?page=accueil&etat='.$etat);
             exit;
         }
+        if(isset($_GET['modif'])){
+            header('Location: index.php?page=modifprofil&profil='.$_GET['modif']);
+            exit;
+        }
 
         $limite=8;
         if(!isset($_GET['nopage'])){

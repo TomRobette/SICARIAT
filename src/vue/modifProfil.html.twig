@@ -6,7 +6,7 @@
 
 <br>
     {% if session.login is defined %}
-        {% if session.login == form['profil'].pseudo %}
+        {% if session.login == form['profil'].pseudo or session.role==1 %}
             <div class="row justify-content-center">
                     <form method="POST" action="index.php?page=modifprofil&profil={{session.login}}" class="col-xl-4 col-sm-8" enctype="multipart/form-data">
                         <div class="form-group">

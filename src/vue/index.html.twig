@@ -38,6 +38,26 @@
                             {% endif %}
                         </div>
                 </li>
+                    {% if session.role==1 %}
+                        <div class="position-relative-left">
+                            <button type="button" class="btn btn-outline-dark">
+                                <a href="index.php?page=accueil&id={{user.id}}" class="text-dark">
+                                    <span class="material-icons">
+                                    delete
+                                    </span>
+                                </a>    
+                            </button>
+                        </div>
+                        <div class="position-relative-left">
+                            <button type="button" class="btn btn-outline-dark">
+                                <a href="index.php?page=modifprofil&profil={{user.id}}" class="text-dark">
+                                    <span class="material-icons">
+                                    create
+                                    </span>
+                                </a>    
+                            </button>
+                        </div> 
+                    {% endif %}
                 {% endfor %}
             </ul>        
         </div>        

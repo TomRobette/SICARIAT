@@ -6,7 +6,7 @@
 
 <br>
     {% if session.login is defined %}
-        {% if session.login == form['profil'].pseudo %}
+        {% if session.login == form['profil'].pseudo or session.role==1 %}
             <div class="container">
                 <div class="row">
                     <div class="col-sm">
