@@ -33,9 +33,9 @@
 			$this->selectLimit = $this->db->prepare("SELECT COUNT(R.id), F.libelle AS forum, F.description, A.id, A.idProfil, P.pseudo, P.photo, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues, A.id_forum FROM article A, profil P, reponse R, forum F WHERE A.idProfil=P.id AND R.idArticle=A.id AND F.id=A.id_forum AND F.id=:id GROUP BY A.id LIMIT :inf,:limite");
 			$this->selectCount =$this->db->prepare("SELECT COUNT(*) AS nb FROM article A, forum F WHERE F.id=A.id_forum AND F.id=:id");
 			$this->addReply = $this->db->prepare("INSERT INTO reponse(idProfil, contenu, idArticle, dateCreation)values(:idProfil,:contenu,:idArticle,NOW())");
-			$this->getReplies = $this->db->prepare("SELECT RP.contenu, P.pseudo, R.libelle, P.photo, A.id AS idArticle, RP.id AS idReply FROM article A, profil P, role R, reponse RP WHERE P.idRole=R.id AND RP.idProfil=P.id AND RP.idArticle=A.id AND A.id=:id");
+			$this->getReplies = $this->db->prepare("SELECT RP.contenu, RP.dateCreation, P.pseudo, R.libelle, P.photo, A.id AS idArticle, RP.id AS idReply FROM article A, profil P, role R, reponse RP WHERE P.idRole=R.id AND RP.idProfil=P.id AND RP.idArticle=A.id AND A.id=:id");
 			$this->deleteReply = $this->db->prepare("DELETE FROM reponse WHERE id=:id");
-			$this->selectLimitReplies = $this->db->prepare("SELECT RP.contenu, P.pseudo, R.libelle, P.photo, A.id AS idArticle FROM article A, profil P, role R, reponse RP WHERE P.idRole=R.id AND RP.idProfil=P.id AND RP.idArticle=A.id ORDER BY RP.dateCreation LIMIT :inf,:limite");
+			$this->selectLimitReplies = $this->db->prepare("SELECT RP.contenu, RP.dateCreation, P.pseudo, R.libelle, P.photo, A.id AS idArticle FROM article A, profil P, role R, reponse RP WHERE P.idRole=R.id AND RP.idProfil=P.id AND RP.idArticle=A.id ORDER BY RP.dateCreation LIMIT :inf,:limite");
 			$this->selectCountReplies = $this->db->prepare("SELECT COUNT(RP.id) AS nb FROM reponse RP, article A WHERE RP.idArticle=A.id");
 			$this->recherche = $this->db->prepare("SELECT A.idProfil, P.pseudo, R.libelle, P.photo, A.id AS idArticle, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE P.idRole=R.id AND A.idProfil=P.id AND /*A.titre LIKE :recherche OR*/ A.contenu LIKE :recherche /*OR P.pseudo LIKE :recherche*/ ORDER BY A.dateModif");
 			$this->selectLimitResearch = $this->db->prepare("SELECT A.idProfil, P.pseudo, R.libelle, P.photo, A.id AS idArticle, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE P.idRole=R.id AND A.idProfil=P.id AND /*A.titre LIKE :recherche OR*/ A.contenu LIKE :recherche /*OR P.pseudo LIKE :recherche*/ ORDER BY A.dateModif LIMIT :inf,:limite");
@@ -96,9 +96,10 @@
 			return $this->recherche->fetchAll();    
 		}
 
-		public function selectLimitResearch($inf, $limite){
+		public function selectLimitResearch($inf, $limite, $research){
 			$this->selectLimitResearch->bindParam(':inf', $inf, PDO::PARAM_INT);
 			$this->selectLimitResearch->bindParam(':limite', $limite, PDO::PARAM_INT);
+			$this->selectLimitResearch->bindParam(':research', $research, PDO::PARAM_INT);
 			$this->selectLimitResearch->execute();
 			if ($this->selectLimitResearch->errorCode()!=0){
 				print_r($this->selectLimitResearch->errorInfo());

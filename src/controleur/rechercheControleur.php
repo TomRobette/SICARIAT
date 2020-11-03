@@ -17,7 +17,7 @@
         $nb = $r['nb'];
 
 
-        $liste = $article->selectLimitResearch($inf,$limite);
+        $liste = $article->selectLimitResearch($inf,$limite,$inputRecherche);
         $form['nbpages'] = ceil($nb/$limite);
         $form['nopage'] = $nopage;
 
