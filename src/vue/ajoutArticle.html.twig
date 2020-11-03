@@ -23,7 +23,7 @@
           <label for="inputForum">Dans quel forum se trouvera-t-il ?</label>
             <select class="form-control" name="inputForum" id="inputForum">
               {% for forum in liste %}
-              <option>{{forum.libelle}}</option>
+              <option value="{{forum.id}}">{{forum.libelle}}</option>
               {% endfor %}
             </select>
         </div>

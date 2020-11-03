@@ -4,7 +4,9 @@
         $liste = array();
 
         $article = new Article($db);
-        $liste = $article->getArticleByForum($_GET['idForum']);
+        if(isset($_GET['idForum'])){
+            $liste = $article->getArticleByForum($_GET['idForum']);
+        }
 
         if(isset($_GET['id'])){
             $exec=$article->delete($_GET['id']);

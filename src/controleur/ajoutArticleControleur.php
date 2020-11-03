@@ -8,10 +8,11 @@
         if (isset($_POST['btPoster'])){  
             $inputTitre = $_POST['inputTitre'];
             $inputContenu = $_POST['inputContenu'];
+            $inputForum = $_POST['inputForum'];
             $form['valide'] = true;      
             $profil = new Profil($db);
             $idProfil = $profil->selectByPseudo($_SESSION['login']);
-            $exec=$article->insert($idProfil['id'], $inputTitre, $inputContenu, 1);
+            $exec=$article->insert($idProfil['id'], $inputTitre, $inputContenu, $inputForum);
             if(!$exec){
                 $form['valide'] = false;
                 $form['message'] = 'Problème d\'insertion dans la table article ';

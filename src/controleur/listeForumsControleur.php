@@ -5,9 +5,10 @@
 
         $article = new Article($db);
         $liste = $article->getForums();
+        $forum = new Forum($db);
 
-        /*if(isset($_GET['id'])){
-            $exec=$article->delete($_GET['id']);
+        if(isset($_GET['id'])){
+            $exec=$forum->delete($_GET['id']);
            
             if (!$exec){
                 $etat = false;
@@ -16,7 +17,7 @@
             }
             header('Location: index.php?page=listeforums&etat='.$etat);
             exit;
-        }*/
+        }
 
         /*$limite=8;
         if(!isset($_GET['nopage'])){

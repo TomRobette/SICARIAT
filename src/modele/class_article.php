@@ -26,6 +26,7 @@
 			//$this->getArticleByForum = $this->db->prepare("SELECT F.libelle AS forum, F.description, A.id, A.idProfil, P.pseudo, P.photo, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues, A.id_forum FROM article A, profil P, forum F WHERE A.idProfil=P.id AND F.id=A.id_forum AND F.id=:id");
 			
 			$this->getArticleByForum = $this->db->prepare("SELECT COUNT(R.id) AS nbRep, F.libelle AS forum, F.description, A.id, A.idProfil, P.pseudo, P.photo, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, reponse R, forum F WHERE A.idProfil=P.id AND R.idArticle=A.id AND F.id=A.id_forum AND F.id=:id GROUP BY A.id");
+			//$this->getArticleByForum = $this->db->prepare("SELECT COUNT(R.id) AS nbRep, F.libelle AS forum, F.description, A.id, A.idProfil, P.pseudo, P.photo, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, reponse R, forum F WHERE A.idProfil=P.id AND R.idArticle=A.id AND F.id=A.id_forum AND F.id=:id GROUP BY A.id");
 			
 			//$this->getABFgroup = $this->db->prepare("SELECT COUNT(R.id) AS nbRep, F.libelle AS forum, F.description, A.id, A.idProfil, P.pseudo, P.photo, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues, A.id_forum FROM article A, profil P, reponse R, forum F WHERE A.idProfil=P.id AND R.idArticle=A.id AND F.id=A.id_forum AND F.id=:id GROUP BY A.id ORDER BY COUNT(R.id) DESC");
 			$this->selectById = $this->db->prepare("SELECT A.idProfil, P.pseudo, R.libelle, P.photo, A.id AS idArticle, A.titre, A.contenu, A.dateCreation, A.dateModif, A.nbVues FROM article A, profil P, role R WHERE A.idProfil=P.id AND P.idRole=R.id AND A.id=:id");
@@ -41,7 +42,7 @@
 			$this->selectCountResearch = $this->db->prepare("SELECT COUNT(id) AS nb FROM article");
 			$this->delete = $this->db->prepare("DELETE FROM article WHERE id=:id");
 			$this->vuePlusUn = $this->db->prepare("UPDATE article SET nbVues=:nbVues WHERE id=:id");
-			$this->getForums = $this->db->prepare("SELECT F.id, F.libelle, F.description, COUNT(A.id) AS nbArticles, SUM(A.nbVues) AS nbVues FROM forum F, article A WHERE A.id_forum=F.id ORDER BY F.id");
+			$this->getForums = $this->db->prepare("SELECT F.id, F.libelle, F.description, COUNT(A.id) AS nbArticles, SUM(A.nbVues) AS nbVues FROM forum F, article A WHERE A.id_forum=F.id GROUP BY F.id ORDER BY F.id");
 			//$this->getForums = $this->db->prepare("SELECT F.id, F.libelle, F.description, COUNT(A.id) AS nbArticles, SUM(A.nbVues) AS nbVues FROM forum F LEFT JOIN article A ON F.id=A.id_forum ORDER BY F.id");
 			//$this->getForums = $this->db->prepare("SELECT F.id, F.libelle, F.description, COUNT(A.id) AS nbArticles, SUM(A.nbVues) AS nbVues FROM forum F, article A WHERE F.id=A.id_forum ORDER BY F.id");
 		

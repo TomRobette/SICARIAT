@@ -3,11 +3,14 @@
 		private $db;
 		private $select;
 		private $insert;
+		private $delete;
 
 		public function __construct($db){
             $this->db=$db;
 			$this->select = $this->db->prepare("SELECT id, libelle, description FROM forum");
 			$this->insert = $this->db->prepare("INSERT INTO forum(libelle, description)values(:libelle, :description)");
+			$this->delete = $this->db->prepare("DELETE FROM forum WHERE id=:id");
+			
 			
 		}
         
@@ -25,6 +28,16 @@
 			
 			if($this->insert->errorCode()!=0){
 				print_r($this->insert->errorInfo());
+				$r=false;
+			}
+			return $r;
+		}
+
+		public function delete($id){
+			$r = true;
+			$this->delete->execute(array(':id'=>$id));
+			if ($this->delete->errorCode()!=0){
+				print_r($this->delete->errorInfo());
 				$r=false;
 			}
 			return $r;
