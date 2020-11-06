@@ -7,12 +7,14 @@
 
         if(isset($_GET['id'])){
             $exec=$profil->delete($_GET['id']);
-           
             if (!$exec){
                 $etat = false;
+                $unProfil=$profil->selectById($_GET['id']);
+                $etat = $profil->modify($unProfil['id'], "Sicaire supprimé", "adresse@supprimee.com", $unProfil['mdp'], "", 7);
             }else{
                 $etat = true;
             }
+            $form['etat']=$etat;
             header('Location: index.php?page=accueil&etat='.$etat);
             exit;
         }

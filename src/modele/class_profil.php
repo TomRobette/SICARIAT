@@ -22,8 +22,8 @@
             $this->insert = $this->db->prepare("INSERT INTO profil(pseudo, email, mdp, idRole, photo, dateInscription)values(:pseudo,:email,:mdp,:idRole,:photo, NOW())");
 			$this->connect = $this->db->prepare("SELECT pseudo, email, idRole, mdp, photo FROM profil WHERE email=:email");
 			$this->connectPseudo = $this->db->prepare("SELECT pseudo, email, idRole, mdp, photo FROM profil WHERE pseudo=:pseudo");
-			$this->selectById = $this->db->prepare("SELECT P.id, P.pseudo, P.email, P.idRole, P.photo, R.libelle, P.dateInscription, P.nbArticles, P.nbReplies, P.hideEmail FROM profil P, role R WHERE P.idRole=R.id AND P.id=:id");
-			$this->selectByPseudo = $this->db->prepare("SELECT P.id, P.pseudo, P.email, P.idRole, R.libelle, P.photo, P.dateInscription, P.nbArticles, P.nbReplies, P.hideEmail FROM profil P, role R WHERE P.idRole=R.id AND P.pseudo=:pseudo");
+			$this->selectById = $this->db->prepare("SELECT P.id, P.pseudo, P.email, P.idRole, P.photo, P.mdp, R.libelle, P.idRole, P.dateInscription, P.nbArticles, P.nbReplies, P.hideEmail FROM profil P, role R WHERE P.idRole=R.id AND P.id=:id");
+			$this->selectByPseudo = $this->db->prepare("SELECT P.id, P.pseudo, P.email, P.idRole, P.photo, P.mdp, R.libelle, P.idRole, P.dateInscription, P.nbArticles, P.nbReplies, P.hideEmail FROM profil P, role R WHERE P.idRole=R.id AND P.pseudo=:pseudo");
 			$this->show = $this->db->prepare("SELECT P.id, P.pseudo, P.email, P.idRole, R.libelle, P.photo, P.dateInscription, P.nbArticles, P.nbReplies, P.hideEmail FROM profil P, role R WHERE P.idRole=R.id ORDER BY DATE_FORMAT(P.dateInscription, '%Y %M %d') DESC");
 			$this->update = $this->db->prepare("UPDATE profil SET pseudo=:pseudo, idRole=:idRole, photo=:photo WHERE id=:id");
 			$this->delete = $this->db->prepare("DELETE FROM profil WHERE id=:id");
@@ -33,7 +33,7 @@
 			$this->hidden = $this->db->prepare("SELECT hideEmail FROM profil WHERE id=:id");
 			$this->addArticle = $this->db->prepare("UPDATE profil SET nbArticles=:nbArticles WHERE id=:id");
 			$this->addReply = $this->db->prepare("UPDATE profil SET nbReplies=:nbReplies WHERE id=:id");
-			$this->modify = $this->db->prepare("UPDATE profil SET pseudo=:pseudo, email=:email, mdp=:mdp, photo=:photo WHERE id=:id");
+			$this->modify = $this->db->prepare("UPDATE profil SET pseudo=:pseudo, email=:email, mdp=:mdp, photo=:photo, idRole=:idRole WHERE id=:id");
 		}
 
         public function insert ($pseudo,$email,$mdp,$idRole,$photo){
@@ -180,9 +180,9 @@
 			return $r;
 		}
 
-		public function modify($id, $pseudo, $email, $mdp, $photo){
+		public function modify($id, $pseudo, $email, $mdp, $photo, $idRole){
 			$r = true;
-			$this->modify->execute(array(':id'=>$id, ':pseudo'=>$pseudo, ':email'=>$email, ':mdp'=>$mdp, ':photo'=>$photo));
+			$this->modify->execute(array(':id'=>$id, ':pseudo'=>$pseudo, ':email'=>$email, ':mdp'=>$mdp, ':photo'=>$photo, ':idRole'=>$idRole));
 			if ($this->modify->errorCode()!=0){
 				print_r($this->modify->errorInfo());
 				$r=false;

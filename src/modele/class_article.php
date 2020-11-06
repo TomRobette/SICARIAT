@@ -42,7 +42,7 @@
 			$this->selectCountResearch = $this->db->prepare("SELECT COUNT(id) AS nb FROM article");
 			$this->delete = $this->db->prepare("DELETE FROM article WHERE id=:id");
 			$this->vuePlusUn = $this->db->prepare("UPDATE article SET nbVues=:nbVues WHERE id=:id");
-			$this->getForums = $this->db->prepare("SELECT F.id, F.libelle, F.description, COUNT(A.id) AS nbArticles, SUM(A.nbVues) AS nbVues FROM forum F, article A WHERE A.id_forum=F.id GROUP BY F.id ORDER BY F.id");
+			$this->getForums = $this->db->prepare("SELECT F.id, F.libelle, F.description, COUNT(A.id) AS nbArticles, SUM(A.nbVues) AS nbVues FROM forum F LEFT JOIN article A ON A.id_forum=F.id GROUP BY F.id ORDER BY F.id");
 			//$this->getForums = $this->db->prepare("SELECT F.id, F.libelle, F.description, COUNT(A.id) AS nbArticles, SUM(A.nbVues) AS nbVues FROM forum F LEFT JOIN article A ON F.id=A.id_forum ORDER BY F.id");
 			//$this->getForums = $this->db->prepare("SELECT F.id, F.libelle, F.description, COUNT(A.id) AS nbArticles, SUM(A.nbVues) AS nbVues FROM forum F, article A WHERE F.id=A.id_forum ORDER BY F.id");
 		

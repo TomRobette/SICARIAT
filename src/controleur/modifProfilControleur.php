@@ -40,7 +40,7 @@
                     $form['valide'] = false;          
                     $form['message'] = 'Les mots de passe sont différents';      
                 }else{
-                    $exec=$profil->modify($unProfil['id'], $inputPseudo, $inputEmail, $mdp, $icn);
+                    $exec=$profil->modify($unProfil['id'], $inputPseudo, $inputEmail, $mdp, $icn, $unProfil['idRole']);
                     if(!$exec){
                         $form['valide'] = false;
                         $form['message'] = 'Problème d\'insertion dans la table profil ';
